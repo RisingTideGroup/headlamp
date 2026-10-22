@@ -1049,6 +1049,7 @@ func createHeadlampHandler(ctx context.Context, config *HeadlampConfig) http.Han
 			ProxyAuthUsernameHeader: config.ProxyAuthUsernameHeader,
 			ProxyAuthGroupHeader:    config.ProxyAuthGroupHeader,
 			ProxyAuthEmailHeader:    config.ProxyAuthEmailHeader,
+			LookupIdentity:          config.selfSubjectReviewIdentity,
 		}),
 	)).Methods("GET")
 
