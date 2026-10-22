@@ -869,6 +869,15 @@ func (c *Context) SetupProxy() error {
 		return err
 	}
 
+	// Let the transport resend request bodies when the API server closes an
+	// HTTP/2 connection (GOAWAY) mid-request; see makeBodyReplayable.
+	baseTransport := proxy.Transport
+	if baseTransport == nil {
+		baseTransport = http.DefaultTransport
+	}
+
+	proxy.Transport = replayableBodyRoundTripper{base: baseTransport}
+
 	c.proxy = proxy
 
 	return nil
