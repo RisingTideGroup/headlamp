@@ -78,6 +78,11 @@ RUN ./fetch-plugins.sh /plugins/
 
 FROM image-base AS final
 
+# Apply the base image's pending security updates (Alpine publishes fixed
+# packages before a new base tag): e.g. alpine:3.24.4 ships OpenSSL 3.5.9-r0
+# and zlib 1.3.2-r1 with MEDIUM advisories fixed in 3.5.9-r1 and 1.4-r0.
+RUN if command -v apk > /dev/null; then apk upgrade --no-cache; fi
+
 # Create the non-root user
 RUN if command -v apt-get > /dev/null; then \
     apt-get update && apt-get install -y --no-install-recommends \
